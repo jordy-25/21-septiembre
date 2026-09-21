@@ -995,6 +995,31 @@ button{font:inherit;color:inherit}
   .cover-copy h1{font-size:clamp(4.2rem,7vw,6.7rem)}
 }
 
+
+/* Hard desktop centering fix */
+@media(min-width:761px){
+  .cover-screen{
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100dvh !important;
+    min-height:100dvh !important;
+    padding:0 !important;
+    overflow:hidden !important;
+  }
+  .cover-card{
+    position:absolute !important;
+    top:50% !important;
+    left:50% !important;
+    margin:0 !important;
+    transform:translate(-50%,-50%) !important;
+    max-height:calc(100dvh - 40px);
+  }
+  .app.entered .cover-screen .cover-card{
+    transform:translate(-50%,-50%) !important;
+  }
+}
+
 /* =========================================================
    RESPONSIVE MOBILE / GITHUB PAGES
    ========================================================= */
@@ -1664,7 +1689,18 @@ const enterBtn = document.getElementById('enterBtn');
 
 document.body.classList.add('landing-open');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-requestAnimationFrame(() => window.scrollTo(0,0));
+
+const forceTop = () => {
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo(0,0);
+};
+
+forceTop();
+requestAnimationFrame(forceTop);
+setTimeout(forceTop,80);
+window.addEventListener('pageshow', forceTop);
+window.addEventListener('load', forceTop);
 const backBtn = document.getElementById('backBtn');
 const openBoxBtn = document.getElementById('openBoxBtn');
 const reset3DBtn = document.getElementById('reset3DBtn');
